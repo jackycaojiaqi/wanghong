@@ -1,0 +1,380 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+From social_sdk_library_project:
+* proguard-project.txt
+From videoplayer:
+* asdf\
+* asdf\defaultpic.gif
+* newres\
+* newres\color\
+* newres\color\bt_list_title.xml
+* newres\color\list_subtitle.xml
+* newres\color\list_title.xml
+* newres\color\list_title_last.xml
+* newres\drawable-hdpi\
+* newres\drawable-hdpi\background_cone.png
+* newres\drawable-hdpi\drawer_shadow.9.png
+* newres\drawable-hdpi\ic_audiosub_circle_normal_o.png
+* newres\drawable-hdpi\ic_audiosub_circle_pressed_o.png
+* newres\drawable-hdpi\ic_backward_normal_w.png
+* newres\drawable-hdpi\ic_backward_pressed_w.png
+* newres\drawable-hdpi\ic_browser_audio_normal.png
+* newres\drawable-hdpi\ic_browser_subtitle_normal.png
+* newres\drawable-hdpi\ic_browser_unknown_normal.png
+* newres\drawable-hdpi\ic_browser_video_normal.png
+* newres\drawable-hdpi\ic_checkbox_false.png
+* newres\drawable-hdpi\ic_checkbox_true.png
+* newres\drawable-hdpi\ic_close_normal_w.png
+* newres\drawable-hdpi\ic_close_pressed.png
+* newres\drawable-hdpi\ic_cone_o.png
+* newres\drawable-hdpi\ic_crop_circle_normal_o.png
+* newres\drawable-hdpi\ic_crop_circle_pressed_o.png
+* newres\drawable-hdpi\ic_down.png
+* newres\drawable-hdpi\ic_down_w.png
+* newres\drawable-hdpi\ic_equalizer_normal.png
+* newres\drawable-hdpi\ic_equalizer_normal_w.png
+* newres\drawable-hdpi\ic_fab_play.png
+* newres\drawable-hdpi\ic_fab_shuffle.png
+* newres\drawable-hdpi\ic_forward_normal_w.png
+* newres\drawable-hdpi\ic_forward_pressed_w.png
+* newres\drawable-hdpi\ic_gesture_finger_1.png
+* newres\drawable-hdpi\ic_gesture_finger_2.png
+* newres\drawable-hdpi\ic_gesture_finger_3.png
+* newres\drawable-hdpi\ic_gesture_swipe_horizontally.png
+* newres\drawable-hdpi\ic_gesture_swipe_vertically.png
+* newres\drawable-hdpi\ic_jumpto_normal.png
+* newres\drawable-hdpi\ic_jumpto_normal_w.png
+* newres\drawable-hdpi\ic_lock_circle_normal_o.png
+* newres\drawable-hdpi\ic_lock_circle_pressed_o.png
+* newres\drawable-hdpi\ic_locked_circle_normal_o.png
+* newres\drawable-hdpi\ic_locked_circle_pressed_o.png
+* newres\drawable-hdpi\ic_logo_w.png
+* newres\drawable-hdpi\ic_menu_audio.png
+* newres\drawable-hdpi\ic_menu_audio_w.png
+* newres\drawable-hdpi\ic_menu_bookmark_outline_w.png
+* newres\drawable-hdpi\ic_menu_bookmark_w.png
+* newres\drawable-hdpi\ic_menu_cone.png
+* newres\drawable-hdpi\ic_menu_cone_w.png
+* newres\drawable-hdpi\ic_menu_equalizer.png
+* newres\drawable-hdpi\ic_menu_folder.png
+* newres\drawable-hdpi\ic_menu_folder_w.png
+* newres\drawable-hdpi\ic_menu_goto.png
+* newres\drawable-hdpi\ic_menu_goto_w.png
+* newres\drawable-hdpi\ic_menu_history.png
+* newres\drawable-hdpi\ic_menu_history_w.png
+* newres\drawable-hdpi\ic_menu_lastplaylist.png
+* newres\drawable-hdpi\ic_menu_network.png
+* newres\drawable-hdpi\ic_menu_network_w.png
+* newres\drawable-hdpi\ic_menu_preferences.png
+* newres\drawable-hdpi\ic_menu_preferences_w.png
+* newres\drawable-hdpi\ic_menu_refresh.png
+* newres\drawable-hdpi\ic_menu_search.png
+* newres\drawable-hdpi\ic_menu_sort.png
+* newres\drawable-hdpi\ic_menu_video.png
+* newres\drawable-hdpi\ic_menu_video_w.png
+* newres\drawable-hdpi\ic_minus_circle_normal_o.png
+* newres\drawable-hdpi\ic_minus_circle_pressed_o.png
+* newres\drawable-hdpi\ic_more_circle_normal_o.png
+* newres\drawable-hdpi\ic_more_circle_pressed_o.png
+* newres\drawable-hdpi\ic_more_normal.png
+* newres\drawable-hdpi\ic_more_normal_w.png
+* newres\drawable-hdpi\ic_more_pressed.png
+* newres\drawable-hdpi\ic_move_media.png
+* newres\drawable-hdpi\ic_move_media_w.png
+* newres\drawable-hdpi\ic_navmenu_circle_normal.png
+* newres\drawable-hdpi\ic_navmenu_circle_normal_o.png
+* newres\drawable-hdpi\ic_navmenu_circle_pressed.png
+* newres\drawable-hdpi\ic_navmenu_circle_pressed_o.png
+* newres\drawable-hdpi\ic_next_normal.png
+* newres\drawable-hdpi\ic_next_normal_w.png
+* newres\drawable-hdpi\ic_next_pressed.png
+* newres\drawable-hdpi\ic_next_pressed_w.png
+* newres\drawable-hdpi\ic_pause_circle_big_normal_o.png
+* newres\drawable-hdpi\ic_pause_circle_big_pressed_o.png
+* newres\drawable-hdpi\ic_pause_circle_normal_o.png
+* newres\drawable-hdpi\ic_pause_circle_pressed_o.png
+* newres\drawable-hdpi\ic_pause_normal.png
+* newres\drawable-hdpi\ic_pause_normal_w.png
+* newres\drawable-hdpi\ic_pause_pressed.png
+* newres\drawable-hdpi\ic_pause_pressed_w.png
+* newres\drawable-hdpi\ic_play_circle_big_normal_o.png
+* newres\drawable-hdpi\ic_play_circle_big_pressed_o.png
+* newres\drawable-hdpi\ic_play_circle_normal_o.png
+* newres\drawable-hdpi\ic_play_circle_pressed_o.png
+* newres\drawable-hdpi\ic_play_normal.png
+* newres\drawable-hdpi\ic_play_normal_w.png
+* newres\drawable-hdpi\ic_play_pressed.png
+* newres\drawable-hdpi\ic_play_pressed_w.png
+* newres\drawable-hdpi\ic_playlist_normal.png
+* newres\drawable-hdpi\ic_playlist_normal_w.png
+* newres\drawable-hdpi\ic_playlist_pressed.png
+* newres\drawable-hdpi\ic_plus_circle_normal_o.png
+* newres\drawable-hdpi\ic_plus_circle_pressed_o.png
+* newres\drawable-hdpi\ic_previous_normal.png
+* newres\drawable-hdpi\ic_previous_normal_w.png
+* newres\drawable-hdpi\ic_previous_pressed.png
+* newres\drawable-hdpi\ic_previous_pressed_w.png
+* newres\drawable-hdpi\ic_repeat_normal.png
+* newres\drawable-hdpi\ic_repeat_normal_w.png
+* newres\drawable-hdpi\ic_repeat_one.png
+* newres\drawable-hdpi\ic_repeat_pressed.png
+* newres\drawable-hdpi\ic_save_grey600_48dp.png
+* newres\drawable-hdpi\ic_save_white_48dp.png
+* newres\drawable-hdpi\ic_seekbar_thumb_normal.png
+* newres\drawable-hdpi\ic_seekbar_thumb_pressed.png
+* newres\drawable-hdpi\ic_shuffle_normal.png
+* newres\drawable-hdpi\ic_shuffle_normal_w.png
+* newres\drawable-hdpi\ic_shuffle_pressed.png
+* newres\drawable-hdpi\ic_sleep_normal.png
+* newres\drawable-hdpi\ic_sleep_normal_w.png
+* newres\drawable-hdpi\ic_speed_normal.png
+* newres\drawable-hdpi\ic_speed_normal_w.png
+* newres\drawable-hdpi\ic_stat_vlc.png
+* newres\drawable-hdpi\ic_trash_normal_w.png
+* newres\drawable-hdpi\ic_trash_small_normal.png
+* newres\drawable-hdpi\ic_trash_small_normal_w.png
+* newres\drawable-hdpi\ic_up.png
+* newres\drawable-hdpi\ic_up_w.png
+* newres\drawable-hdpi\icon.png
+* newres\drawable-hdpi\icon_g.png
+* newres\drawable-hdpi\img_tips_audioplayer.png
+* newres\drawable-hdpi\img_tips_playlist.png
+* newres\drawable-hdpi\seekbar_thumb_normal.png
+* newres\drawable-hdpi\seekbar_thumb_pressed.png
+* newres\drawable-hdpi\shadow_bottom.9.png
+* newres\drawable-hdpi\shadow_bottom_dark.9.png
+* newres\drawable-hdpi\shadow_top.9.png
+* newres\drawable-hdpi\shadow_top_dark.9.png
+* newres\drawable\
+* newres\drawable\background.xml
+* newres\drawable\background_header_item.xml
+* newres\drawable\background_item.xml
+* newres\drawable\button_oval.xml
+* newres\drawable\cursor_w.xml
+* newres\drawable\custom_checkbox_button.xml
+* newres\drawable\gridview_progressbar.xml
+* newres\drawable\gridview_progressbar_w.xml
+* newres\drawable\header_fadein_overlay.xml
+* newres\drawable\header_fadeout_overlay.xml
+* newres\drawable\ic_audiosub_circle.xml
+* newres\drawable\ic_backward_w.xml
+* newres\drawable\ic_close_w.xml
+* newres\drawable\ic_crop_circle_o.xml
+* newres\drawable\ic_forward_w.xml
+* newres\drawable\ic_lock_circle.xml
+* newres\drawable\ic_locked_circle.xml
+* newres\drawable\ic_minus_circle.xml
+* newres\drawable\ic_more.xml
+* newres\drawable\ic_more_circle.xml
+* newres\drawable\ic_navmenu_circle.xml
+* newres\drawable\ic_navmenu_circle_o.xml
+* newres\drawable\ic_next.xml
+* newres\drawable\ic_next_w.xml
+* newres\drawable\ic_pause.xml
+* newres\drawable\ic_pause_circle.xml
+* newres\drawable\ic_pause_circle_big_o.xml
+* newres\drawable\ic_pause_for_header_play_pause.xml
+* newres\drawable\ic_pause_for_header_play_pause_w.xml
+* newres\drawable\ic_pause_w.xml
+* newres\drawable\ic_play.xml
+* newres\drawable\ic_play_circle.xml
+* newres\drawable\ic_play_circle_big_o.xml
+* newres\drawable\ic_play_for_header_play_pause.xml
+* newres\drawable\ic_play_for_header_play_pause_w.xml
+* newres\drawable\ic_play_w.xml
+* newres\drawable\ic_plus_circle.xml
+* newres\drawable\ic_previous.xml
+* newres\drawable\ic_previous_w.xml
+* newres\drawable\po_seekbar.xml
+* newres\drawable\progress.xml
+* newres\drawable\progress_mini_player.xml
+* newres\drawable\progress_mini_player_dark.xml
+* newres\drawable\rounded_corners.xml
+* newres\drawable\seekbar_thumb.xml
+* newres\drawable\tab_focused.xml
+* newres\drawable\tab_indicator.xml
+* newres\drawable\tab_pressed.xml
+* newres\drawable\tab_selected.xml
+* newres\drawable\tab_unselected.xml
+* newres\drawable\verticalbar_border.xml
+* newres\drawable\video_list_length_bg.xml
+* newres\values\
+* newres\values\attrs.xml
+* newres\values\booleans.xml
+* newres\values\colors.xml
+* newres\values\dimens.xml
+* newres\values\strings.xml
+* proguard-project.txt
+From zbrj:
+* proguard-project.txt
+* proguard\
+* proguard\dump.txt
+* proguard\mapping.txt
+* proguard\seeds.txt
+* proguard\usage.txt
+* res.rar
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:19.+
+gcm.jar => com.google.android.gms:play-services:+
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In social_sdk_library_project:
+* AndroidManifest.xml => social_sdk_library_project\src\main\AndroidManifest.xml
+* assets\ => social_sdk_library_project\src\main\assets
+* libs\httpmime-4.1.3.jar => social_sdk_library_project\libs\httpmime-4.1.3.jar
+* libs\SocialSDK_actionbarview.jar => social_sdk_library_project\libs\SocialSDK_actionbarview.jar
+* libs\SocialSDK_AtFriends.jar => social_sdk_library_project\libs\SocialSDK_AtFriends.jar
+* libs\SocialSDK_comment.jar => social_sdk_library_project\libs\SocialSDK_comment.jar
+* libs\SocialSDK_email.jar => social_sdk_library_project\libs\SocialSDK_email.jar
+* libs\SocialSDK_QQZone_1.jar => social_sdk_library_project\libs\SocialSDK_QQZone_1.jar
+* libs\SocialSDK_QQZone_2.jar => social_sdk_library_project\libs\SocialSDK_QQZone_2.jar
+* libs\SocialSDK_QQZone_3.jar => social_sdk_library_project\libs\SocialSDK_QQZone_3.jar
+* libs\SocialSDK_Sina.jar => social_sdk_library_project\libs\SocialSDK_Sina.jar
+* libs\SocialSDK_sms.jar => social_sdk_library_project\libs\SocialSDK_sms.jar
+* libs\SocialSDK_tencentWB_1.jar => social_sdk_library_project\libs\SocialSDK_tencentWB_1.jar
+* libs\SocialSDK_tencentWB_2.jar => social_sdk_library_project\libs\SocialSDK_tencentWB_2.jar
+* libs\SocialSDK_tencentWB_3.jar => social_sdk_library_project\libs\SocialSDK_tencentWB_3.jar
+* libs\SocialSDK_WeiXin_1.jar => social_sdk_library_project\libs\SocialSDK_WeiXin_1.jar
+* libs\SocialSDK_WeiXin_2.jar => social_sdk_library_project\libs\SocialSDK_WeiXin_2.jar
+* libs\umeng_social_sdk.jar => social_sdk_library_project\libs\umeng_social_sdk.jar
+* res\ => social_sdk_library_project\src\main\res\
+* src\ => social_sdk_library_project\src\main\java
+In videoplayer:
+* AndroidManifest.xml => videoplayer\src\main\AndroidManifest.xml
+* assets\ => videoplayer\src\main\assets
+* custom\ => videoplayer\src\main\java\
+* libs\armeabi\libanw.10.so => videoplayer\src\main\jniLibs\armeabi\libanw.10.so
+* libs\armeabi\libanw.13.so => videoplayer\src\main\jniLibs\armeabi\libanw.13.so
+* libs\armeabi\libanw.14.so => videoplayer\src\main\jniLibs\armeabi\libanw.14.so
+* libs\armeabi\libanw.18.so => videoplayer\src\main\jniLibs\armeabi\libanw.18.so
+* libs\armeabi\libanw.21.so => videoplayer\src\main\jniLibs\armeabi\libanw.21.so
+* libs\armeabi\libiomx.10.so => videoplayer\src\main\jniLibs\armeabi\libiomx.10.so
+* libs\armeabi\libiomx.13.so => videoplayer\src\main\jniLibs\armeabi\libiomx.13.so
+* libs\armeabi\libiomx.14.so => videoplayer\src\main\jniLibs\armeabi\libiomx.14.so
+* libs\armeabi\libndkbitmap.so => videoplayer\src\main\jniLibs\armeabi\libndkbitmap.so
+* libs\armeabi\libvlcjni.so => videoplayer\src\main\jniLibs\armeabi\libvlcjni.so
+* libvlc\ => videoplayer\src\main\java\
+* libvlc\org\videolan\libvlc\util\defaultpic.gif => videoplayer\src\main\resources\org\videolan\libvlc\util\defaultpic.gif
+* lint.xml => videoplayer\lint.xml
+* res\ => videoplayer\src\main\res\
+* src\ => videoplayer\src\main\java\
+* src\org\videolan\vlc\interfaces\IAudioService.aidl => videoplayer\src\main\aidl\org\videolan\vlc\interfaces\IAudioService.aidl
+* src\org\videolan\vlc\interfaces\IAudioServiceCallback.aidl => videoplayer\src\main\aidl\org\videolan\vlc\interfaces\IAudioServiceCallback.aidl
+* src\org\videolan\vlc\MediaWrapper.aidl => videoplayer\src\main\aidl\org\videolan\vlc\MediaWrapper.aidl
+In zbrj:
+* AndroidManifest.xml => zbrj\src\main\AndroidManifest.xml
+* assets\ => zbrj\src\main\assets\
+* libs\armeabi\libavcodec.so => zbrj\src\main\jniLibs\armeabi\libavcodec.so
+* libs\armeabi\libavformat.so => zbrj\src\main\jniLibs\armeabi\libavformat.so
+* libs\armeabi\libavutil.so => zbrj\src\main\jniLibs\armeabi\libavutil.so
+* libs\armeabi\libBaiduMapSDK_v3_3_0_15.so => zbrj\src\main\jniLibs\armeabi\libBaiduMapSDK_v3_3_0_15.so
+* libs\armeabi\libeasemobservice.so => zbrj\src\main\jniLibs\armeabi\libeasemobservice.so
+* libs\armeabi\libilbc-codec.so => zbrj\src\main\jniLibs\armeabi\libilbc-codec.so
+* libs\armeabi\libjniavcodec.so => zbrj\src\main\jniLibs\armeabi\libjniavcodec.so
+* libs\armeabi\libjniavformat.so => zbrj\src\main\jniLibs\armeabi\libjniavformat.so
+* libs\armeabi\libjniavutil.so => zbrj\src\main\jniLibs\armeabi\libjniavutil.so
+* libs\armeabi\libjniopencv_core.so => zbrj\src\main\jniLibs\armeabi\libjniopencv_core.so
+* libs\armeabi\libjnipostproc.so => zbrj\src\main\jniLibs\armeabi\libjnipostproc.so
+* libs\armeabi\libjniswresample.so => zbrj\src\main\jniLibs\armeabi\libjniswresample.so
+* libs\armeabi\libjniswscale.so => zbrj\src\main\jniLibs\armeabi\libjniswscale.so
+* libs\armeabi\liblocSDK5.so => zbrj\src\main\jniLibs\armeabi\liblocSDK5.so
+* libs\armeabi\libopencv_core.so => zbrj\src\main\jniLibs\armeabi\libopencv_core.so
+* libs\armeabi\libpostproc.so => zbrj\src\main\jniLibs\armeabi\libpostproc.so
+* libs\armeabi\libswresample.so => zbrj\src\main\jniLibs\armeabi\libswresample.so
+* libs\armeabi\libswscale.so => zbrj\src\main\jniLibs\armeabi\libswscale.so
+* libs\armeabi\libtbb.so => zbrj\src\main\jniLibs\armeabi\libtbb.so
+* libs\baidumapapi_v3_3_0.jar => zbrj\libs\baidumapapi_v3_3_0.jar
+* libs\commons-codec.jar => zbrj\libs\commons-codec.jar
+* libs\easemobchat_2.2.0.jar => zbrj\libs\easemobchat_2.2.0.jar
+* libs\ffmpeg-2.5.1-0.10.jar => zbrj\libs\ffmpeg-2.5.1-0.10.jar
+* libs\javacpp-0.10.jar => zbrj\libs\javacpp-0.10.jar
+* libs\locSDK_5.0.jar => zbrj\libs\locSDK_5.0.jar
+* libs\opencv-2.4.10-0.10fix.jar => zbrj\libs\opencv-2.4.10-0.10fix.jar
+* libs\pinyin4j-2.5.0.jar => zbrj\libs\pinyin4j-2.5.0.jar
+* libs\sunjce_provider.jar => zbrj\libs\sunjce_provider.jar
+* libs\universal-image-loader-1.9.4.jar => zbrj\libs\universal-image-loader-1.9.4.jar
+* libs\videoinput-0.200-0.10.jar => zbrj\libs\videoinput-0.200-0.10.jar
+* lint.xml => zbrj\lint.xml
+* res\ => zbrj\src\main\res\
+* src\ => zbrj\src\main\java\
+* src_common\ => zbrj\src\main\java\
+* src_danmu\ => zbrj\src\main\java\
+* src_fc\ => zbrj\src\main\java\
+* src_im\ => zbrj\src\main\java\
+* src_im_api\ => zbrj\src\main\java\
+* src_interface\ => zbrj\src\main\java\
+* src_nineoldandroid\ => zbrj\src\main\java\
+* src_video\ => zbrj\src\main\java\
+* src_zbrj\ => zbrj\src\main\java\
+* test\ => zbrj\src\main\java\
+* zbrj_share\ => zbrj\src\main\java\
+
+Missing Android Support Repository:
+-----------------------------------
+Some useful libraries, such as the Android Support Library, are
+installed from a special Maven repository, which should be installed
+via the SDK manager.
+
+It looks like this library is missing from your SDK installation at:
+null
+
+To install it, open the SDK manager, and in the Extras category,
+select "Android Support Repository". You may also want to install the
+"Google Repository" if you want to use libraries like Google Play
+Services.
+
+Missing Google Repository:
+--------------------------
+The Google Play Services library is installed from a special Maven
+Repository, which should be installed via the SDK manager.
+
+It looks like this library is missing from your SDK installation at:
+null
+
+To install it, open the SDK manager, and in the Extras category,
+select "Google Repository".
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

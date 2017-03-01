@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="bottom_radio_text">#ada7a7</color>
+    <color name="bottom_radio_checked_text">#dc1c3c</color>
+    <color name="home_tab_backgroud">#ffffff</color>
+    <color name="home_room_text">#111111</color>
+    <color name="user_title_text">#2761a3</color>
+    <color name="login_background">#07c3f7</color>
+    <color name="chat_input_backgd">#f2efef</color>
+    <color name="room_message_color">#0e9dd6</color>
+    <color name="my_text_center">#f40f07</color>
+    <color name="my_center_line">#999292</color>
+    <color name="gift_back_color">#fb0aaf</color>
+    <color name="login_btn_back">#ff336699</color>
+    <color name="head_bg_color">#dc1c3c</color>
+    <color name="reply_button_disable">#f5f5f5</color>
+    <color name="reply_button_text">#dfFFFFFF</color>
+    <color name="reply_button_text_disable">#b8b8b8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_primary">#df000000</color>
+</resources>
