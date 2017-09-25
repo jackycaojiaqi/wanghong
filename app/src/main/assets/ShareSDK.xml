@@ -56,11 +56,18 @@
     
     <ShareSDK 
         AppKey = "1959f411b81c8"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
-    
+
+    <TencentWeibo
+        AppKey="knefHKEZQofiXKJs"
+        Enable="true"
+        AppSecret="ae36f4ee3946e1cbb98d6965b0b2ff5c"
+        SortId="7"
+        Id="2"
+        RedirectUri="http://www.baidu.com"/>
     <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
     <SinaWeibo
         Id="1"
-        SortId="1"
+        SortId="4"
         AppKey="3675646371"
         AppSecret="e856dfa205d98c7891e307aef3897d3a"
         RedirectUrl="http://www.baidu.com"
@@ -69,13 +76,13 @@
 
     <QZone
         Id="3"
-        SortId="3"
+        SortId="5"
         AppId="1105846032"
         AppKey="knefHKEZQofiXKJs"
         Enable="true" />
     <QQ
         Id="7"
-        SortId="7"
+        SortId="1"
         AppId="1105846032"
         AppKey="knefHKEZQofiXKJs"
         ShareByAppClient="true"

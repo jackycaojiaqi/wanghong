@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 14
@@ -18,19 +18,15 @@ android {
 }
 
 dependencies {
-    compile files('libs/MobCommons-2016.0406.1915.jar')
-    compile files('libs/MobTools-2016.0406.1915.jar')
-    compile files('libs/ShareSDK-Core-2.7.1.jar')
-    compile files('libs/ShareSDK-Email-2.7.1.jar')
-    compile files('libs/ShareSDK-Facebook-2.7.1.jar')
-    compile files('libs/ShareSDK-QQ-2.7.1.jar')
-    compile files('libs/ShareSDK-QZone-2.7.1.jar')
-    compile files('libs/ShareSDK-ShortMessage-2.7.1.jar')
-    compile files('libs/ShareSDK-SinaWeibo-2.7.1.jar')
-    compile files('libs/ShareSDK-TencentWeibo-2.7.1.jar')
-    compile files('libs/ShareSDK-Twitter-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-Core-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-Favorite-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-Moments-2.7.1.jar')
+    compile files('libs/MobCommons-2017.0412.1554.jar')
+    compile files('libs/MobTools-2017.0412.1554.jar')
+    compile files('libs/ShareSDK-Core-2.8.3.jar')
+    compile files('libs/ShareSDK-QQ-2.8.3.jar')
+    compile files('libs/ShareSDK-QZone-2.8.3.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.8.3.jar')
+    compile files('libs/ShareSDK-TencentWeibo-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.8.3.jar')
 }

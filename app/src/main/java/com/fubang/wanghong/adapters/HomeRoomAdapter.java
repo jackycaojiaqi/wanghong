@@ -15,7 +15,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.fubang.wanghong.AppConstant;
 import com.fubang.wanghong.entities.RoomListEntity;
 import com.fubang.wanghong.R;
+import com.fubang.wanghong.ui.RoomActivity;
 import com.fubang.wanghong.ui.RoomActivity_;
+import com.fubang.wanghong.ui.RoomNewActivity;
 import com.fubang.wanghong.ui.RoomNewActivity_;
 import com.zhuyunjian.library.ListBaseAdapter;
 

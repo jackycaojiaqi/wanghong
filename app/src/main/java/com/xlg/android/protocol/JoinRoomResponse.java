@@ -68,9 +68,18 @@ public class JoinRoomResponse {
 	@StructOrder(30)
 	private int 			ntimeelapse;					//在房间时长
 	@StructOrder(31)
+	private int 			version;							//当前版本号
+	@StructOrder(32)
 	private ByteBuffer playerlist = new ByteBuffer();				//管理员列表。变长
-	
-	
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
 	public int getUserid() {
 		return userid;
 	}

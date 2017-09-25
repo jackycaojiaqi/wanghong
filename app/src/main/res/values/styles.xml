@@ -18,7 +18,16 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
-
+    <style name="pop_set_radio">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
     <style name="widget_home_head_image">
         <item name="android:layout_width">23dp</item>
         <item name="android:layout_height">23dp</item>

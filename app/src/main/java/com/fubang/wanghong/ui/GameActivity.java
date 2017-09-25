@@ -1,10 +1,13 @@
 package com.fubang.wanghong.ui;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.fubang.wanghong.R;
 import com.zhuyunjian.library.StartUtil;
 
@@ -24,70 +27,20 @@ import java.security.NoSuchAlgorithmException;
 
 @EActivity(R.layout.activity_game)
 public class GameActivity extends BaseActivity {
-    @ViewById(R.id.game_web)
-    WebView webView;
-
-    public static final String GAME_URL = " http://120.26.108.184:98/game.htm?ip=120.26.108.184&port=9999&memberid=";
-//            "memberid=1003&passwd=4ae72303977a82903a46e7addacb7c33&" +
-//            "sysserial=01f77905-6ea6-4d6b-8b5e-edcc59487f89&mac=74-27-EA-E5-A3-DA";
-    @Override
-    public void before() {
-
-    }
+    @ViewById(R.id.game_image)
+    SimpleDraweeView imageView;
+    @ViewById(R.id.game_jiazai)
+    Button button;
 
     @Override
     public void initView() {
-        String pwd = StartUtil.getUserPwd(this);
-        String mdPwd = stringToMD5(pwd);
-        String userId = StartUtil.getUserId(this);
-        String mac = StartUtil.getDeviceId(this);
-        StringBuilder gameUrl = new StringBuilder(GAME_URL);
-        gameUrl.append(userId).append("&passwd=")
-                .append(mdPwd).append("&sysserial=01f77905-6ea6-4d6b-8b5e-edcc59487f89&mac=")
-                .append(mac);
-        webView.loadUrl(gameUrl.toString());
-
-//        int w = View.MeasureSpec.makeMeasureSpec(0,
-//                View.MeasureSpec.UNSPECIFIED);
-//        int h = View.MeasureSpec.makeMeasureSpec(0,
-//                View.MeasureSpec.UNSPECIFIED);
-//        //重新测量
-//        webView.measure(w, h);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                imageView.setImageURI(Uri.parse("http://120.26.127.210:9419/user_pic/20170424043324_989.jpg"));
+//                imageView.setImageURI(Uri.parse("https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/holiday/habo/res/doodle/17.png"));
+                imageView.setImageURI(Uri.parse("http://120.26.127.210:9419/user_pic/20170424043821_397.jpg"));
+            }
+        });
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    /**
-     * 将字符串转成MD5值
-     *
-     * @param string
-     * @return
-     */
-    public static String stringToMD5(String string) {
-        byte[] hash;
-
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10)
-                hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-
-        return hex.toString();
-    }
-
-
 }

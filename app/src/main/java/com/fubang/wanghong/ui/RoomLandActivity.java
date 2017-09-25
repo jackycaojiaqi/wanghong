@@ -159,6 +159,7 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
     private int mic1 = 1;
     private int mic2 = 2;
     private static AudioPlay play = new AudioPlay();
+    private boolean mStop = false;
     private RoomMain roomMain = new RoomMain(this);
     private EmotionInputDetector mDetector;
 
@@ -609,17 +610,20 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
 //        toName = obj.getUseralias();
         micid = obj.getUserid();
 //        Log.d("123","micid====="+micid);
-        ssrc = ~micid + 0x1314;
+//        ssrc = ~micid + 0x1314;
+        ssrc = micid;
 
         mgr.AddRTPRecver(0, ssrc, 99, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
         mgr.AddRTPRecver(0, ssrc, 97, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123","ssrc====="+ssrc);
+        Log.d("123","ssrc====="+ssrc);
         mgr.AddVideoStream(ssrc,  0, 1, this);
-        if (!isplaying)
+        if (!isplaying) {
             mgr.AddAudioStream(ssrc,1,this);
+        }
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc,ssrc);
     }
 
     @Override
@@ -688,17 +692,19 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
             }
         }
         micid = obj.getUserid();
-        ssrc = ~micid + 0x1314;
+        ssrc = micid;
 
         mgr.AddRTPRecver(0, ssrc, 99, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
         mgr.AddRTPRecver(0, ssrc, 97, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123","ssrc====="+ssrc);
+        Log.d("123","ssrc====="+ssrc);
         mgr.AddVideoStream(ssrc,  0, 1, this);
-        if (!isplaying)
+        if (!isplaying) {
             mgr.AddAudioStream(ssrc,1,this);
+        }
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc,ssrc);
     }
 
     @Subscriber(tag = "downMicState")
@@ -718,14 +724,23 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
     @Override
     public void onStop() {
 //        Log.d("123", "onStop---");
+        mStop = true;
         isRunning = false;
         super.onStop();
-        if (mgr != null && play != null) {
+        if (mgr != null){
+            final AVModuleMgr tmp = mgr;
+            mgr = null;
             play.stop();
-            mgr.StopRTPSession();
-            mgr.Uninit();
-            roomMain.getRoom().getChannel().sendLeaveRoom(Integer.parseInt(StartUtil.getUserId(this)));
-            roomMain.getRoom().onDisconnected();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    tmp.StopRTPSession();
+                    tmp.Uninit();
+                    roomMain.getRoom().getChannel().sendLeaveRoom(Integer.parseInt(StartUtil.getUserId(RoomLandActivity.this)));
+                    roomMain.getRoom().onDisconnected();
+                }
+            }).start();
+
         }
 
     }
@@ -739,31 +754,33 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
 //        mgr.StartRTPSession();
 //        }
         toid = uid;
-        if (rand < 1800000000)
-            rand = 1800000000;
-
-//        ssrc = rand - uid;
-        ssrc = ~uid + 0x1314;
+        ssrc = uid;
+        mgr.AddAudioStream(ssrc, 1, this);
+        mgr.AddVideoStream(ssrc,  0, 1, this);
         mgr.AddRTPRecver(0, ssrc, 99, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
         mgr.AddRTPRecver(0, ssrc, 97, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123", "ssrc=====" + ssrc);
-        mgr.AddAudioStream(ssrc, 1, this);
-        mgr.AddVideoStream(ssrc, 0, 1, this);
+        Log.d("123","ssrc====="+ssrc);
+        isplaying = true;
+        mgr.InitCDNSDK();
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc,ssrc);
 
     }
 
     @Override
     public void onVideo(int ssrc, int width, int height, byte[] img) {
+        if(false != mStop) {
+            return;
+        }
         System.out.println("==ssrc"+ssrc+"======== onVideo: " + width + ":" + height + "(" + img.length + ")");
         if (micUsers.size() == 1){
 //        actorid = obj.getActorid();
             buddyid = micUsers.get(0).getUserid();
             toName = micUsers.get(0).getUseralias();
             micid = micUsers.get(0).getUserid();
-            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (~micUsers.get(0).getUserid() + 0x1314))) {
+            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (micUsers.get(0).getUserid()))) {
                 if (textBackImage.isShown()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -803,7 +820,7 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (~micUsers.get(0).getUserid() + 0x1314))){
+            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (micUsers.get(0).getUserid() ))){
                 if (textBackImage2.isShown()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -843,7 +860,7 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)))
+            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (micUsers.get(0).getUserid() )))
             {
                 if (textBackImage3.isShown()) {
                     runOnUiThread(new Runnable() {
@@ -896,8 +913,8 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                 toName = micUsers.get(1).getUseralias();
                 micid = micUsers.get(1).getUserid();
             }
-            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (~micUsers.get(1).getUserid() + 0x1314))) {
+            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (micUsers.get(1).getUserid() ))) {
                 if (textBackImage.isShown()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -937,8 +954,8 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (~micUsers.get(1).getUserid() + 0x1314))){
+            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (micUsers.get(1).getUserid() ))){
                 if (textBackImage2.isShown()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -978,8 +995,8 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)))
+            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (micUsers.get(1).getUserid() )))
             {
                 if (textBackImage3.isShown()) {
                     runOnUiThread(new Runnable() {
@@ -1036,9 +1053,9 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                 toName = micUsers.get(2).getUseralias();
                 micid = micUsers.get(2).getUserid();
             }
-            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)) ||
-                    (micUsers.get(2).getMicindex() == mic0 && ssrc == (~micUsers.get(2).getUserid() + 0x1314))) {
+            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (micUsers.get(1).getUserid() )) ||
+                    (micUsers.get(2).getMicindex() == mic0 && ssrc == (micUsers.get(2).getUserid()))) {
                 if (textBackImage.isShown()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -1078,9 +1095,9 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)) ||
-                    (micUsers.get(2).getMicindex() == mic1 && ssrc == (~micUsers.get(2).getUserid() + 0x1314))){
+            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (micUsers.get(0).getUserid())) ||
+                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (micUsers.get(1).getUserid() )) ||
+                    (micUsers.get(2).getMicindex() == mic1 && ssrc == (micUsers.get(2).getUserid()))){
                 if (textBackImage2.isShown()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -1120,9 +1137,9 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)) ||
-                    (micUsers.get(2).getMicindex() == mic2 && ssrc == (~micUsers.get(2).getUserid() + 0x1314)))
+            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (micUsers.get(1).getUserid() )) ||
+                    (micUsers.get(2).getMicindex() == mic2 && ssrc == (micUsers.get(2).getUserid() )))
             {
                 if (textBackImage3.isShown()) {
                     runOnUiThread(new Runnable() {
@@ -1173,6 +1190,9 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
 
     @Override
     public void onAudio(int ssrc, int sample, int channel, byte[] pcm) {
+        if(false != mStop) {
+            return;
+        }
         System.out.println("========== onAudio: " + sample + ":" + channel + "(" + pcm.length + ")");
         if (play != null) {
             play.setConfig(sample, channel);
@@ -1185,6 +1205,9 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
     private int mediaRand;
     @Override
     public void onMic(String ip, int port, int rand, int uid) {
+        if(false != mStop) {
+            return;
+        }
         mediaIp = ip;
         mediaPort = port;
         mediaRand = rand;
@@ -1197,13 +1220,14 @@ public class RoomLandActivity extends BaseActivity implements AVNotify, MicNotif
             mgr.CreateRTPSession(0);
             mgr.SetServerAddr2(ip, port, 0);
             mgr.StartRTPSession();
-            StartAV(ip, port, rand, uid);
+            StartAV("", 0, 0, uid);
         }
     }
 
     @Override
     protected void onDestroy() {
 //        Log.d("123", "onDestory---");
+        mStop = true;
         isRunning = false;
         super.onDestroy();
         if (mgr == null) {

@@ -203,6 +203,7 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
     private int mic0 = 0;
     private int mic1 = 1;
     private int mic2 = 2;
+    private boolean mStop = false;
     private static AudioPlay play  = new AudioPlay();
     private RoomMain roomMain = new RoomMain(this);
     private EmotionInputDetector mDetector;
@@ -1074,6 +1075,7 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
     @Override
     public void onStop() {
 //        Log.d("123","onStop---");
+        mStop = true;
         isRunning = false;
         super.onStop();
         if (mgr != null){
@@ -1102,8 +1104,8 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
             }
         }
         micid = obj.getUserid();
-        ssrc = ~micid + 0x1314;
-
+//        ssrc = ~micid + 0x1314;
+        ssrc = micid;
         mgr.AddRTPRecver(0, ssrc, 99, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
@@ -1113,6 +1115,7 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
         mgr.AddVideoStream(ssrc,  0, 1, this);
         if (!isplaying)
             mgr.AddAudioStream(ssrc,1,this);
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc, ssrc);
     }
     //下麦提示
     @Subscriber(tag = "downMicState")
@@ -1142,8 +1145,8 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
 //        toName = obj.getUseralias();
         micid = obj.getUserid();
 //        Log.d("123","micid====="+micid);
-        ssrc = ~micid + 0x1314;
-
+//        ssrc = ~micid + 0x1314;
+        ssrc = micid;
         mgr.AddRTPRecver(0, ssrc, 99, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
@@ -1153,6 +1156,7 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
         mgr.AddVideoStream(ssrc,  0, 1, this);
         if (!isplaying)
             mgr.AddAudioStream(ssrc,1,this);
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc, ssrc);
     }
     //开始接收添加视频接收流
     public void StartAV(String ip, int port, int rand, int uid) {
@@ -1167,20 +1171,21 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
 
 //        if (rand < 1800000000)
 //            rand = 1800000000;
-        ssrc = ~uid + 0x1314;
-
+//        ssrc = ~uid + 0x1314;
+        ssrc = uid;
         mgr.AddRTPRecver(0, ssrc, 99, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
         mgr.AddRTPRecver(0, ssrc, 97, 1000);
         mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123","ssrc====="+ssrc);
-//        isplaying = true;
+        Log.d("123","ssrc====="+ssrc);
+        isplaying = true;
         mgr.AddAudioStream(ssrc, 1, this);
         mgr.AddVideoStream(ssrc,  0, 1, this);
 
 
-
+        mgr.InitCDNSDK();
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc, ssrc);
 
 
 
@@ -1205,6 +1210,9 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
     //接收视频流
     @Override
     public void onVideo(int ssrc, int width, int height, byte[] img) {
+        if(false != mStop) {
+            return;
+        }
         Paint paint = new Paint();
         paint.setAntiAlias(false);
         paint.setFilterBitmap(true);
@@ -1609,7 +1617,9 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
     @Override
     public void onAudio(int ssrc, int sample, int channel, byte[] pcm) {
 //        System.out.println("========== onAudio: " + sample + ":" + channel + "(" + pcm.length + ")");
-
+        if(false != mStop) {
+            return;
+        }
         if (play != null) {
             isplaying = true;
             play.setConfig(sample, channel);
@@ -1619,7 +1629,9 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
 
     @Override
     public void onMic(String ip, int port, int rand, int uid) {
-
+        if(false != mStop) {
+            return;
+        }
         mediaIp = ip;
         mediaPort = port;
         mediaRand = rand;
@@ -1633,13 +1645,14 @@ public class RoomNewActivity extends BaseActivity implements MicNotify, AVNotify
             mgr.CreateRTPSession(0);
             mgr.SetServerAddr2(ip, port, 0);
             mgr.StartRTPSession();
-            StartAV(ip, port, rand, uid);
+            StartAV("", 0, 0, uid);
         }
     }
     //320086319
     @Override
     protected void onDestroy() {
 //        Log.d("123","onDestory---");
+        mStop = true;
         isRunning = false;
         super.onDestroy();
         if (mgr == null){

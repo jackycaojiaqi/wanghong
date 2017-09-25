@@ -19,11 +19,15 @@ public class AVModuleMgr {
 
     private native void _AddRTPRecver(int id, int recvertype, int ssrc, int pt, int jittertime);
     private native void _SetRTPRecverARQMode(int id, int ssrc, int pt, int buseARQ);
-
+    
+    private native int _InitCDNSDK(int id);
+    private native int _CreateRTMPRecver(int id, String url, int ssrc);
+    private native int _DelRTMPRecver(int id, int ssrc);
+    
 	static {
 		System.loadLibrary("avmodule");
 	}
-
+	
 	// 初始化
 	public void Init() {
 		_session = _Init();
@@ -81,4 +85,16 @@ public class AVModuleMgr {
     	_SetRTPRecverARQMode(_session, ssrc, pt, buseARQ);
     }
 
+    // cdn
+    public int InitCDNSDK() {
+    	return _InitCDNSDK(_session);
+    }
+    
+    public int CreateRTMPRecver(String url, int ssrc) {
+    	return _CreateRTMPRecver(_session, url, ssrc);
+    }
+    
+    public int DelRTMPRecver(int ssrc) {
+    	return _DelRTMPRecver(_session, ssrc);
+    }
 }

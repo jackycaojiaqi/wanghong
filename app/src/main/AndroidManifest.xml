@@ -149,8 +149,13 @@
         <activity
             android:name=".ui.RoomNewActivity_"
             android:configChanges="keyboardHidden|orientation" />
-        <activity android:name=".ui.GameActivity_"
-            android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.GameActivity_">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
     </application>
 
 </manifest>

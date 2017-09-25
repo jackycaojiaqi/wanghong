@@ -3,6 +3,7 @@ package com.zhuyunjian.library;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 
 import com.alipay.sdk.app.PayTask;
 
@@ -91,7 +92,7 @@ public class AsyncPayTask extends AsyncTask<String, Void, PayResult> {
         orderInfo += "&total_fee=" + "\"" + price + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://zhifu.zzzktv.com/alipay_app/notify_url.php"
+        orderInfo += "&notify_url=" + "\"" + "http://zhifu2.zzzktv.com/alipay_app/notify_url.php"
                 + "\"";
 
         // 服务接口名称， 固定值
@@ -118,7 +119,7 @@ public class AsyncPayTask extends AsyncTask<String, Void, PayResult> {
 
         // 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
         // orderInfo += "&paymethod=\"expressGateway\"";
-
+        Log.d("123",orderInfo);
         return orderInfo;
     }
 

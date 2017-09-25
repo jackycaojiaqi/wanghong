@@ -1,11 +1,27 @@
 [
     {
+        "merged": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_auth_title_back.png",
+        "source": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ssdk_auth_title_back.png"
+    },
+    {
         "merged": "E:\\fubang\\Wanghong\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_auth_title_back.png",
         "source": "E:\\fubang\\Wanghong\\shareSDKmainLibs\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ssdk_auth_title_back.png"
     },
     {
+        "merged": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_back_arr.png",
+        "source": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ssdk_back_arr.png"
+    },
+    {
+        "merged": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_logo.png",
+        "source": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ssdk_logo.png"
+    },
+    {
         "merged": "E:\\fubang\\Wanghong\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_logo.png",
         "source": "E:\\fubang\\Wanghong\\shareSDKmainLibs\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ssdk_logo.png"
+    },
+    {
+        "merged": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_title_div.png",
+        "source": "E:\\fubang\\Qingganzaixian\\shareSDKmainLibs\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ssdk_title_div.png"
     },
     {
         "merged": "E:\\fubang\\Wanghong\\shareSDKmainLibs\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ssdk_title_div.png",

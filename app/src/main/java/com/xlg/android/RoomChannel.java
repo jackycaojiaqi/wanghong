@@ -664,6 +664,7 @@ public class RoomChannel  implements ClientSocketHandler {
 		obj.setVcbid(mRoomID);
 		obj.setCuserpwd(mUserPwd);
 		obj.setVcbpwd(mRoomPwd);
+		obj.setDeviceid(2);
 		obj.setUserstate(mUserState);
 		
 		sendPack(head, obj);

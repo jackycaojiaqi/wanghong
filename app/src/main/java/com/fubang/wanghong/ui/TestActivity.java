@@ -118,7 +118,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
     EditText editText;
     @ViewById(R.id.room_new_chat_send)
     Button sendBtn;
-    //    @ViewById(R.id.room_message_list)
+    //        @ViewById(R.id.room_message_list)
 //    ListView listView;
     @ViewById(R.id.room_new_gift)
     ImageView giftImage;
@@ -160,7 +160,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 
     private RoomChatAdapter adapter;
 
-    private AVModuleMgr mgr;
+    private AVModuleMgr mgr = null;
     private SurfaceView surfaceView;
     private SurfaceView surfaceView2;
     private SurfaceView surfaceView3;
@@ -181,7 +181,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
     private int mic2 = 2;
     private static AudioPlay play  = new AudioPlay();
     private RoomMain roomMain = new RoomMain(this);
-    private EmotionInputDetector mDetector;
+
 
     private PopupWindow popupWindow;
     private PopupWindow faceWindow;
@@ -216,8 +216,9 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
     private int mediaRand;
     private boolean isplaying;
     private String pwd = "";
+    private boolean mStop = false;
 
-    static Activity TestActivity;
+    static Activity roomActivity;
     @ViewById(R.id.game_btn)
     ImageView gameBtn;
     @ViewById(R.id.room_new_viewpager)
@@ -227,6 +228,8 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
     private List<Fragment> fragments = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private int chatToFlag = 0;
+    private int ssrcFlag;
+
     @Override
     public void before() {
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -250,7 +253,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 
 
     }
-
+    private EmotionInputDetector mDetector;
     @ViewById(R.id.emotion_new_layout)
     RelativeLayout emotionLayout;
     //    @ViewById(R.id.room_new_message_list)
@@ -445,7 +448,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
         fragments.add(PersonFragment_.builder().arg(AppConstant.HOME_TYPE,titles.get(1)).build());
         fragments.add(LookFragment_.builder().arg(AppConstant.HOME_TYPE,titles.get(2)).build());
         roomIdTv.setText(roomId+"");
-        TestActivity = this;
+        roomActivity = this;
 //        if (mDetector != null) {
 //            mDetector = null;
 //        }
@@ -486,7 +489,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //            @Override
 //            public void onClick(View v) {
 ////                finish();
-////                startActivity(RoomLandActivity_.intent(TestActivity.this).extra("roomIp",roomIp).extra("roomId",roomId+"").get());
+////                startActivity(RoomLandActivity_.intent(RoomActivity.this).extra("roomIp",roomIp).extra("roomId",roomId+"").get());
 //
 //                if (micUsers.size() != 1 && mgr != null) {
 //                    mgr.DelAudioStream(ssrc);
@@ -714,6 +717,13 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //
 //        faceWindow.setOutsideTouchable(true);
 //    }
+
+    private void showSet(){
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.pop_gift_grid,null);
+    }
+
+
     private  EditText giftToUser;
     //礼物的悬浮框
     private void showWindow() {
@@ -1253,42 +1263,76 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
         super.onResume();
         micUsers = new ArrayList<>();
         configuration = getResources().getConfiguration();
-        isRunning = true;
+//        isRunning = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (isRunning) {
-                    play.start();
+                mStop = false;
+//                while (isRunning) {
+                play.start();
 //                    Log.d("123", "chongxingqidong");
-                    roomMain.Start(roomId, Integer.parseInt(StartUtil.getUserId(TestActivity.this)), StartUtil.getUserPwd(TestActivity.this), ip, port, pwd);
-                }
+                roomMain.Start(roomId, Integer.parseInt(StartUtil.getUserId(TestActivity.this)), StartUtil.getUserPwd(TestActivity.this), ip, port, pwd);
+//                }
             }
         }).start();
     }
 
-    //停止视频流,结束离开房间
     @Override
-    public void onStop() {
-//        Log.d("123","onStop---");
-        isRunning = false;
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        mStop = true;
+//        isRunning = false;
         if (mgr != null){
             final AVModuleMgr tmp = mgr;
             mgr = null;
-            play.stop();
+//            play.stop();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    tmp.StopRTPSession();
+                    play.stop();
+                    for (int i = 0; i < micUsers.size(); i++) {
+                        tmp.DelRTMPRecver(micUsers.get(i).getUserid());
+                    }
                     tmp.Uninit();
+//                    roomMain.getRoom().getChannel().sendLeaveRoom(Integer.parseInt(StartUtil.getUserId(RoomActivity.this)));
+//                    roomMain.getRoom().onDisconnected();
+                }
+            }).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
                     roomMain.getRoom().getChannel().sendLeaveRoom(Integer.parseInt(StartUtil.getUserId(TestActivity.this)));
                     roomMain.getRoom().onDisconnected();
                 }
             }).start();
 
         }
-
     }
+
+    //    //停止视频流,结束离开房间
+//    @Override
+//    public void onStop() {
+////        Log.d("123","onStop---");
+//        mStop = true;
+//        isRunning = false;
+//        super.onStop();
+//        if (mgr != null){
+//            final AVModuleMgr tmp = mgr;
+//            mgr = null;
+//            play.stop();
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    tmp.StopRTPSession();
+//                    tmp.Uninit();
+//                    roomMain.getRoom().getChannel().sendLeaveRoom(Integer.parseInt(StartUtil.getUserId(RoomActivity.this)));
+//                    roomMain.getRoom().onDisconnected();
+//                }
+//            }).start();
+//
+//        }
+//
+//    }
     //上麦提示
     @Subscriber(tag = "upMicState")
     public void upMicState(MicState obj){
@@ -1299,17 +1343,22 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
             }
         }
         micid = obj.getUserid();
-        ssrc = ~micid + 0x1314;
+//        ssrc = ~micid + 0x1314;
+        ssrc = micid;
 
-        mgr.AddRTPRecver(0, ssrc, 99, 1000);
-        mgr.SetRTPRecverARQMode(ssrc, 99, 1);
 
-        mgr.AddRTPRecver(0, ssrc, 97, 1000);
-        mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123","ssrc====="+ssrc);
+//        mgr.AddRTPRecver(0, ssrc, 99, 1000);
+//        mgr.SetRTPRecverARQMode(ssrc, 99, 1);
+//
+//        mgr.AddRTPRecver(0, ssrc, 97, 1000);
+//        mgr.SetRTPRecverARQMode(ssrc, 97, 1);
+        Log.d("123","ssrc====="+ssrc);
         mgr.AddVideoStream(ssrc,  0, 1, this);
-        if (!isplaying)
-            mgr.AddAudioStream(ssrc,1,this);
+//        if (!isplaying) {
+//            mgr.AddAudioStream(ssrc,1,this);
+//        }
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc,ssrc);
+
     }
     //下麦提示
     @Subscriber(tag = "downMicState")
@@ -1339,17 +1388,22 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //        toName = obj.getUseralias();
         micid = obj.getUserid();
 //        Log.d("123","micid====="+micid);
-        ssrc = ~micid + 0x1314;
+//        ssrc = ~micid + 0x1314;
+        if (ssrcFlag != micid) {
+            ssrc = micid;
 
-        mgr.AddRTPRecver(0, ssrc, 99, 1000);
-        mgr.SetRTPRecverARQMode(ssrc, 99, 1);
-
-        mgr.AddRTPRecver(0, ssrc, 97, 1000);
-        mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123","ssrc====="+ssrc);
-        mgr.AddVideoStream(ssrc,  0, 1, this);
-        if (!isplaying)
-            mgr.AddAudioStream(ssrc,1,this);
+//        mgr.AddRTPRecver(0, ssrc, 99, 1000);
+//        mgr.SetRTPRecverARQMode(ssrc, 99, 1);
+//
+//        mgr.AddRTPRecver(0, ssrc, 97, 1000);
+//        mgr.SetRTPRecverARQMode(ssrc, 97, 1);
+            Log.d("123", "ssrc=====" + ssrc);
+            mgr.AddVideoStream(ssrc, 0, 1, this);
+//        if (!isplaying) {
+//            mgr.AddAudioStream(ssrc,1,this);
+//        }
+            mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_" + roomId + "_" + ssrc, ssrc);
+        }
     }
     //开始接收添加视频接收流
     public void StartAV(String ip, int port, int rand, int uid) {
@@ -1361,20 +1415,24 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //        mgr.StartRTPSession();
 //        }
 //        toid = uid;
-
+        mgr.Init();
 //        if (rand < 1800000000)
 //            rand = 1800000000;
-        ssrc = ~uid + 0x1314;
-
-        mgr.AddRTPRecver(0, ssrc, 99, 1000);
-        mgr.SetRTPRecverARQMode(ssrc, 99, 1);
-
-        mgr.AddRTPRecver(0, ssrc, 97, 1000);
-        mgr.SetRTPRecverARQMode(ssrc, 97, 1);
-//        Log.d("123","ssrc====="+ssrc);
-//        isplaying = true;
+//        ssrc = ~uid + 0x1314;
+        ssrc = uid;
+        ssrcFlag = ssrc;
         mgr.AddAudioStream(ssrc, 1, this);
         mgr.AddVideoStream(ssrc,  0, 1, this);
+//        mgr.AddRTPRecver(0, ssrc, 99, 1000);
+//        mgr.SetRTPRecverARQMode(ssrc, 99, 1);
+
+//        mgr.AddRTPRecver(0, ssrc, 97, 1000);
+//        mgr.SetRTPRecverARQMode(ssrc, 97, 1);
+        Log.d("123","ssrc====="+ssrc);
+//        isplaying = true;
+        mgr.InitCDNSDK();
+        mgr.CreateRTMPRecver("rtmp://pili-live-rtmp.fbyxsp.com/wanghong/wh_"+roomId+"_"+ssrc,ssrc);
+
 
 
 
@@ -1402,12 +1460,15 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
     //接收视频流
     @Override
     public void onVideo(int ssrc, int width, int height, byte[] img) {
+        if(false != mStop) {
+            return;
+        }
         Paint paint = new Paint();
         paint.setAntiAlias(false);
         paint.setFilterBitmap(true);
 //        paint.setDither(true);
 //        Paint paint = new Paint(Paint.DITHER_FLAG);
-//        System.out.println("==ssrc"+ssrc+"======== onVideo: " + width + ":" + height + "(" + img.length + ")");
+        System.out.println("==ssrc"+ssrc+"======== onVideo: " + width + ":" + height + "(" + img.length + ")");
         //判断几个在麦序上
         if (micUsers.size() == 1){
 //        actorid = obj.getActorid();
@@ -1415,7 +1476,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //            toName = micUsers.get(0).getUseralias();
 //            micid = micUsers.get(0).getUserid();
             //一麦显示一麦,二麦显示二麦,三麦显示三麦
-            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (~micUsers.get(0).getUserid() + 0x1314))) {
+            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (micUsers.get(0).getUserid()))) {
 //                            textBackImage.setVisibility(View.GONE);
 //                            surfaceView.setVisibility(View.VISIBLE);
                 // 删除旧的
@@ -1449,7 +1510,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (~micUsers.get(0).getUserid() + 0x1314))){
+            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (micUsers.get(0).getUserid()))){
 //                if (textBackImage2.isShown()) {
 //                    runOnUiThread(new Runnable() {
 //                        @Override
@@ -1489,7 +1550,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)))
+            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (micUsers.get(0).getUserid() )))
             {
 //                if (textBackImage3.isShown()) {
 //                    runOnUiThread(new Runnable() {
@@ -1542,8 +1603,8 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //                toName = micUsers.get(1).getUseralias();
 //                micid = micUsers.get(1).getUserid();
 //            }
-            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (~micUsers.get(1).getUserid() + 0x1314))) {
+            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (micUsers.get(1).getUserid() ))) {
 //                            textBackImage.setVisibility(View.GONE);
 //                            surfaceView.setVisibility(View.VISIBLE);
                 // 删除旧的
@@ -1576,8 +1637,8 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (~micUsers.get(1).getUserid() + 0x1314))){
+            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (micUsers.get(1).getUserid() ))){
 //                if (textBackImage2.isShown()) {
 //                    runOnUiThread(new Runnable() {
 //                        @Override
@@ -1617,8 +1678,8 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)))
+            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (micUsers.get(1).getUserid() )))
             {
 //                if (textBackImage3.isShown()) {
 //                    runOnUiThread(new Runnable() {
@@ -1675,9 +1736,9 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //                toName = micUsers.get(2).getUseralias();
 //                micid = micUsers.get(2).getUserid();
 //            }
-            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)) ||
-                    (micUsers.get(2).getMicindex() == mic0 && ssrc == (~micUsers.get(2).getUserid() + 0x1314))) {
+            if ((micUsers.get(0).getMicindex() == mic0 && ssrc == (micUsers.get(0).getUserid() )) ||
+                    (micUsers.get(1).getMicindex() == mic0 && ssrc == (micUsers.get(1).getUserid() )) ||
+                    (micUsers.get(2).getMicindex() == mic0 && ssrc == (micUsers.get(2).getUserid() ))) {
 //                            textBackImage.setVisibility(View.GONE);
 //                            surfaceView.setVisibility(View.VISIBLE);
 
@@ -1711,9 +1772,9 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)) ||
-                    (micUsers.get(2).getMicindex() == mic1 && ssrc == (~micUsers.get(2).getUserid() + 0x1314))){
+            }else if ((micUsers.get(0).getMicindex() == mic1 && ssrc == (micUsers.get(0).getUserid())) ||
+                    (micUsers.get(1).getMicindex() == mic1 && ssrc == (micUsers.get(1).getUserid() )) ||
+                    (micUsers.get(2).getMicindex() == mic1 && ssrc == (micUsers.get(2).getUserid() ))){
 //                if (textBackImage2.isShown()) {
 //                    runOnUiThread(new Runnable() {
 //                        @Override
@@ -1753,9 +1814,9 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
                         }
                     }
                 }
-            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (~micUsers.get(0).getUserid() + 0x1314)) ||
-                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (~micUsers.get(1).getUserid() + 0x1314)) ||
-                    (micUsers.get(2).getMicindex() == mic2 && ssrc == (~micUsers.get(2).getUserid() + 0x1314)))
+            }else if ((micUsers.get(0).getMicindex() == mic2 && ssrc == (micUsers.get(0).getUserid())) ||
+                    (micUsers.get(1).getMicindex() == mic2 && ssrc == (micUsers.get(1).getUserid())) ||
+                    (micUsers.get(2).getMicindex() == mic2 && ssrc == (micUsers.get(2).getUserid())))
             {
 //                if (textBackImage3.isShown()) {
 //                    runOnUiThread(new Runnable() {
@@ -1805,10 +1866,12 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
     //音频接收播放
     @Override
     public void onAudio(int ssrc, int sample, int channel, byte[] pcm) {
-//        System.out.println("========== onAudio: " + sample + ":" + channel + "(" + pcm.length + ")");
-
+        System.out.println("========== onAudio: " + sample + ":" + channel + "(" + pcm.length + ")");
+        if(false != mStop) {
+            return;
+        }
         if (play != null) {
-            isplaying = true;
+//            isplaying = true;
             play.setConfig(sample, channel);
             play.play(pcm);
         }
@@ -1816,7 +1879,9 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 
     @Override
     public void onMic(String ip, int port, int rand, int uid) {
-
+        if(false != mStop) {
+            return;
+        }
         mediaIp = ip;
         mediaPort = port;
         mediaRand = rand;
@@ -1825,27 +1890,30 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
         if(null == mgr) {
             mgr = new AVModuleMgr();
 //            Log.d("123","mgr-----new--"+mgr);
-            mgr.Init();
+//            mgr.Init();
+//            mgr.InitCDNSDK();
 //            Log.d("123", "===uid" + uid);
-            mgr.CreateRTPSession(0);
-            mgr.SetServerAddr2(ip, port, 0);
-            mgr.StartRTPSession();
-            StartAV(ip, port, rand, uid);
+//            mgr.CreateRTPSession(0);
+//            mgr.SetServerAddr2(ip, port, 0);
+//            mgr.StartRTPSession();
+            StartAV("", 0, 0, uid);
         }
     }
     //320086319
     @Override
     protected void onDestroy() {
 //        Log.d("123","onDestory---");
-        isRunning = false;
+        mStop = true;
+//        isRunning = false;
         super.onDestroy();
-        if (mgr == null){
-
-        }else {
-            mgr.StopRTPSession();
-            mgr.Uninit();
-            play.stop();
-        }
+//        if (mgr == null){
+//
+//        }else {
+//            mgr.StopRTPSession();
+////            mgr.DelRTMPRecver(ssrc);
+//            mgr.Uninit();
+//            play.stop();
+//        }
         EventBus.getDefault().unregister(this);
     }
 
@@ -1863,9 +1931,9 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
             x2 = event.getX();
             y2 = event.getY();
             if(y1 - y2 > 50) {
-//                Toast.makeText(TestActivity.this, "向上滑", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(RoomActivity.this, "向上滑", Toast.LENGTH_SHORT).show();
             } else if(y2 - y1 > 50) {
-//                Toast.makeText(TestActivity.this, "向下滑", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(RoomActivity.this, "向下滑", Toast.LENGTH_SHORT).show();
             } else if(x1 - x2 > 50) {
                 if (micUsers.size() != 1) {
 /**
@@ -1901,7 +1969,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //                        StartAV(mediaIp, mediaPort, mediaRand, micUsers.get(micUsers.size() - 1).getUserid());
 //                    }
                 }
-//                Toast.makeText(TestActivity.this, "向左滑", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(RoomActivity.this, "向左滑", Toast.LENGTH_SHORT).show();
             } else if(x2 - x1 > 50) {
                 if (micFlag == 1){
                     micFlag--;
@@ -1926,7 +1994,7 @@ public class TestActivity extends BaseActivity implements MicNotify, AVNotify, V
 //                        StartAV(mediaIp, mediaPort, mediaRand, micUsers.get(0).getUserid());
 //                    }
 //                }
-//                Toast.makeText(TestActivity.this, "向右滑", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(RoomActivity.this, "向右滑", Toast.LENGTH_SHORT).show();
             }
             else {
                 if (testController.isShown()){

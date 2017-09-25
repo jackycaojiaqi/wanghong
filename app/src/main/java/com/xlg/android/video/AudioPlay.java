@@ -3,7 +3,6 @@ package com.xlg.android.video;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.util.Log;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -20,25 +19,24 @@ public class AudioPlay {
 	private AudioTrack audioTrack; // 音频播放类
 	private byte blockBuff[];
 	private byte adpcmBuff[];
-	private boolean isStop = false;
+	private boolean isStop = true;
 
 	public AudioPlay() {
 
 	}
-	public void start(){
+
+	public void start() {
 		isStop = false;
 	}
+	
 	/**
 	 * 开始播放
 	 */
 	public void play(byte[] head) {
 		if(false == isStop) {
 			try{
-				if (audioTrack != null && head!= null) {
-					audioTrack.write(head, 0, head.length);
-					audioTrack.flush();
-//					Log.d("123","audiotrack ----head"+head.length);
-				}
+				audioTrack.write(head, 0, head.length);
+				audioTrack.flush();
 			} catch(Exception e) {
 				System.out.println("onAudio play error:" + e.getMessage());
 				e.printStackTrace();
@@ -46,24 +44,17 @@ public class AudioPlay {
 		}
 	}
 
-
-
 	/**
 	 * 停止播放
 	 */
 	public void stop() {
 		isStop = true;
-		try {
-			if (null != audioTrack) {
-				Log.d("123", "audioTrack----");
-				audioTrack.stop();
-				audioTrack.release();
-				audioTrack = null;
-				audioCycle = 0;
-				audioChannel = 0;
-			}
-		}catch (IllegalStateException e){
-			e.printStackTrace();
+		if (null != audioTrack) {
+			audioTrack.stop();
+			audioTrack.release();
+			audioTrack = null;
+			audioCycle = 0;
+			audioChannel = 0;
 		}
 	}
 	
@@ -74,11 +65,11 @@ public class AudioPlay {
 		if(false != isStop) {
 			return;
 		}
-		sample = 44100;
+		
 		if(audioCycle == sample && audioChannel == channel) {
 			return;
 		}
-//		audioCycle = 44100;
+		
 		audioCycle = sample;
 		audioChannel = channel;
 		
@@ -89,7 +80,7 @@ public class AudioPlay {
 		}
 		
 		try{
-			int format = (2==audioChannel)? AudioFormat.CHANNEL_CONFIGURATION_STEREO: AudioFormat.CHANNEL_CONFIGURATION_DEFAULT;
+			int format = (2==audioChannel)?AudioFormat.CHANNEL_CONFIGURATION_STEREO:AudioFormat.CHANNEL_CONFIGURATION_DEFAULT;
 			int bufsize = AudioTrack.getMinBufferSize(audioCycle, audioChannel, format);// audioCycle * 20;
 			audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
 					audioCycle,
